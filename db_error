@@ -23,7 +23,7 @@ try {
     $stmt = $pdo->query($sql);
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     foreach ($result as $row) {
-        echo $row['username'] . "<br>"
+        echo $row['username'] . "<br>";
     }
 } catch (PDOException $e) {
     die("クエリ実行失敗: " . $e->getMessage());
