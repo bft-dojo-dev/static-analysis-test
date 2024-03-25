@@ -1,0 +1,31 @@
+<?php
+// データベース接続情報
+$host = 'localhost';
+$dbname = 'mydatabase';
+$user = 'myuser';
+$password = 'mypassword';
+
+// ユーザー入力
+$user_input = $_GET['input'];
+
+// データベース接続
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
+} catch (PDOException $e) {
+    die("データベース接続失敗: " . $e->getMessage());
+}
+
+// SQLインジェクションの脆弱性を含むクエリ
+$sql = "SELECT * FROM users WHERE username = '$user_input'";
+
+// クエリ実行
+try {
+    $stmt = $pdo->query($sql);
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($result as $row) {
+        echo $row['username'] . "<br>"
+    }
+} catch (PDOException $e) {
+    die("クエリ実行失敗: " . $e->getMessage());
+}
+?>
