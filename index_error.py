@@ -15,3 +15,5 @@ def my_function():
     print("This will never be printed")  # この行は到達不可能
 
 my_dict = {'a': 1, 'b': 2, 'a': 3}  # 'a' キーが重複
+
+print(終了)
