@@ -1,6 +1,7 @@
 import sqlite3
 from flask import Flask, request
 
+print(開始)
 app = Flask(__name__)
 
 # データベース接続の設定
@@ -26,4 +27,4 @@ def search():
 if __name__ == '__main__':
     app.run(debug=True)
 
-print(終了)
+print('終了')
