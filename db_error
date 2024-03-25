@@ -1,31 +1,29 @@
-<?php
-// データベース接続情報
-$host = 'localhost';
-$dbname = 'mydatabase';
-$user = 'myuser';
-$password = 'mypassword';
+import sqlite3
+from flask import Flask, request
 
-// ユーザー入力
-$user_input = $_GET['input'];
+app = Flask(__name__)
 
-// データベース接続
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
-} catch (PDOException $e) {
-    die("データベース接続失敗: " . $e->getMessage());
-}
+# データベース接続の設定
+DATABASE = 'mydatabase.db'
 
-// SQLインジェクションの脆弱性を含むクエリ
-$sql = "SELECT * FROM users WHERE username = '$user_input'";
+def get_db():
+    conn = sqlite3.connect(DATABASE)
+    return conn
 
-// クエリ実行
-try {
-    $stmt = $pdo->query($sql);
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    foreach ($result as $row) {
-        echo $row['username'] . "<br>";
-    }
-} catch (PDOException $e) {
-    die("クエリ実行失敗: " . $e->getMessage());
-}
-?>
+@app.route('/search')
+def search():
+    username = request.args.get('username')
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # SQLインジェクションの脆弱性を含むクエリ
+    query = "SELECT * FROM users WHERE username = '{}'".format(username)
+    cursor.execute(query)
+
+    results = cursor.fetchall()
+    return '<br>'.join([str(row) for row in results])
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+print(終了)
